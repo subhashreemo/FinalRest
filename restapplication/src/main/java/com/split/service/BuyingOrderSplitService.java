@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.split.entity.BuyingCenterEntity;
 import com.split.repositories.BuyingOrderSplitRepository;
-import com.split.repositories.WeeklySplitRepository;
+
 
 @Service
 @Transactional(value="transactionManager")
@@ -19,9 +19,21 @@ public class BuyingOrderSplitService {
 	// Get BO Split    
 	public List<BuyingCenterEntity> getBOSplit(Integer id,String region,String cluster){
 		//Iterable<BuyingCenterEntity> boSplit = buyingordersplitrepository.findAll();
-		Iterable<BuyingCenterEntity> boSplit = buyingordersplitrepository.findByBoid(id,region,cluster);
+		System.out.println("CLUSTER "+cluster);
 		List<BuyingCenterEntity> entities = new ArrayList<>();
-		boSplit.forEach(entities::add);
+		if(cluster.equalsIgnoreCase("cluster")||cluster.equalsIgnoreCase(null)){
+			System.out.println("******BuyingOrderSplitService else condition******" );
+			Iterable<BuyingCenterEntity> boSplit = buyingordersplitrepository.findByidregion(id,region);
+			boSplit.forEach(entities::add);
+			
+		}
+		else{
+			System.out.println("******IF condition******" );
+			Iterable<BuyingCenterEntity> boSplit = buyingordersplitrepository.findByBoid(id,region,cluster);
+			//List<BuyingCenterEntity> entities = new ArrayList<>();
+			boSplit.forEach(entities::add);
+		}
 		return entities;
+		
 	}
 }

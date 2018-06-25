@@ -1,6 +1,8 @@
 package com.split.beans;
 
-import java.util.List;
+import java.util.Optional;
+
+import javax.validation.constraints.Null;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,13 +12,16 @@ import com.split.entity.WeeklySplitEntity;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class WeeklySplitBean {
 	
-	//private String WEEK;
+	@JsonProperty("maximumWeek")
+	private Integer MWEEK;
 	//private String WEEK_YEAR;
 	@JsonProperty("region")
 	private String REGION;
 	
+	
 	@JsonProperty("cluster")
 	private String CLUSTER;
+	//Optional<String> CLUSTER;
 	
 	/*@JsonProperty("quantity")
 	private double TQUANTITY;*/
@@ -63,9 +68,13 @@ public class WeeklySplitBean {
 	// constructor for setting bean- WeeklySplitBean	
 	public WeeklySplitBean(WeeklySplitEntity entity){
 		this.BO_ID = entity.getBO_ID();
-		//this.WEEK = entity.getWEEK();
+		this.MWEEK=4;//hardcoded for temporarly as no column in database
+		/*this.MWEEK = entity.getMWEEK();
+		System.out.println("entity.getMWEEK() is "+entity.getMWEEK());*/
 		//this.WEEK_YEAR = entity.getWEEK_YEAR();
-		this.CLUSTER= entity.getCLUSTER();
+		this.CLUSTER= entity.getCLUSTER();//cluster.isPresent()?cluster.get():"cluster"
+		//this.CLUSTER=entity.getCLUSTER().isPresent()?CLUSTER.toString():"cluster";
+		System.out.println("CLUSTER" +entity.getCLUSTER());
 		this.COMPONENT = entity.getCOMPONENT();
 		this.REGION = entity.getREGION();
 		this.TOTAL=entity.getTOTAL();
@@ -100,6 +109,16 @@ public class WeeklySplitBean {
 		}
 	}
 	
+	
+
+	public Integer getMWEEK() {
+		return MWEEK;
+	}
+
+	public void setMWEEK(Integer mWEEK) {
+		MWEEK = mWEEK;
+	}
+
 	public Integer getBO_ID() {
 		return BO_ID;
 	}
@@ -113,9 +132,19 @@ public class WeeklySplitBean {
 	public void setCLUSTER(String cLUSTER) {
 		CLUSTER = cLUSTER;
 	}
+	/*public Optional<String> getCLUSTER() {
+		return CLUSTER;
+	}
+
+	public void setCLUSTER(Optional<String> cLUSTER) {
+		CLUSTER = cLUSTER;
+	}*/
+	
 	public String getCOMPONENT() {
 		return COMPONENT;
 	}
+	
+
 	public void setCOMPONENT(String cOMPONENT) {
 		COMPONENT = cOMPONENT;
 	}

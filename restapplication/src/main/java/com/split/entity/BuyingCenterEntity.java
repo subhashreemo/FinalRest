@@ -1,12 +1,11 @@
 package com.split.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -16,20 +15,24 @@ import org.eclipse.persistence.annotations.ReadOnly;
 @ReadOnly
 @Table(schema = "\"_SYS_BIC\"", name ="\"tgbl.data.transaction.views/CV_TGBL_BUYING_CENTER_SPLIT\"")
 //@NamedQuery(name = BuyingCenterEntity.FIND_ALL, query = "select s from BuyingCenterEntity s")
-@NamedQuery(name= BuyingCenterEntity.findByBoid,query="SELECT s FROM BuyingCenterEntity s WHERE s.BO_ID =:BO_ID and s.REGION =:REGION and s.CLUSTER =:CLUSTER")
+@NamedQueries({
+@NamedQuery(name= BuyingCenterEntity.findByBoid,query="SELECT s FROM BuyingCenterEntity s WHERE s.BO_ID =:BO_ID and s.REGION =:REGION and s.CLUSTER =:CLUSTER"),
+@NamedQuery(name= BuyingCenterEntity.findByidregion,query="SELECT s FROM BuyingCenterEntity s WHERE s.BO_ID =:BO_ID and s.REGION =:REGION")
+})
 public class BuyingCenterEntity{
 	public static final String FIND_ALL = "BuyingCenterEntity.findAll";
 	public static final String findByBoid = "BuyingCenterEntity.findByBoid";
+	public static final String findByidregion = "BuyingCenterEntity.findByidregion";
 	
 	@Column(name = "BO_ID")
     private Integer BO_ID;
 	
 	@Column(name = "WEEK_YEAR")
 	private String WEEK_YEAR;//
-
+	@Id
 	@Column(name = "REGION")
 	private String REGION;//REGION
-	
+	@Id
 	@Column(name = "BUYING_CENTER")
 	private String BUYING_CENTER;//Center
 	

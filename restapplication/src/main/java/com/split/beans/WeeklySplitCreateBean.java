@@ -6,6 +6,9 @@ import com.split.entity.WeeklySplitCreateEntity;;
 public class WeeklySplitCreateBean {
 	@JsonProperty("id")
 	private Integer BO_ID;
+	
+	@JsonProperty("maximumWeek")
+	private Integer MWEEK;	
 
 	@JsonProperty("region")
 	private String REGION;
@@ -61,6 +64,14 @@ public class WeeklySplitCreateBean {
 	public void setBO_ID(Integer bO_ID) {
 		BO_ID = bO_ID;
 
+	}
+	
+	public Integer getMWEEK() {
+		return MWEEK;
+	}
+
+	public void setMWEEK(Integer mWEEK) {
+		MWEEK = mWEEK;
 	}
 
 	public String getREGION() {

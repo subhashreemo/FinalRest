@@ -3,7 +3,7 @@ package com.split.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
+//import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -27,6 +27,7 @@ public class WeeklySplitCreateEntity {
 	@Column(name = "COMPONENT")
 	private String component;
 	
+	@Id
 	@Column(name = "WEEK")
 	public String WEEK;
 	

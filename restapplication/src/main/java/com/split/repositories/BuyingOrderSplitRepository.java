@@ -11,6 +11,8 @@ import com.split.entity.BuyingCenterEntity;
 @Repository
 public interface BuyingOrderSplitRepository extends CrudRepository<BuyingCenterEntity, Long>{
 	List<BuyingCenterEntity> findByBoid(@Param("BO_ID") Integer bo_id,@Param("REGION") String region,@Param("CLUSTER") String cluster);
+	//findByidregion
+	List<BuyingCenterEntity> findByidregion(@Param("BO_ID") Integer bo_id,@Param("REGION") String region);
 	}
 
 	

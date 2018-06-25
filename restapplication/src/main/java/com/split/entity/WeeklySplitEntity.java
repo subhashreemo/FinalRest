@@ -1,12 +1,13 @@
 package com.split.entity;
 
-import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -16,12 +17,16 @@ import org.eclipse.persistence.annotations.ReadOnly;
 @ReadOnly
 @Table(schema = "\"_SYS_BIC\"", name = "\"tgbl.data.transaction.views/CV_TGBL_WEEKLY_SPLIT\"")
 //@NamedQuery(name = WeeklySplitEntity.FIND_ALL, query = "select s from WeeklySplitEntity s")
-@NamedQuery(name= WeeklySplitEntity.findByBoid,query="SELECT s FROM WeeklySplitEntity s WHERE s.BO_ID =:BO_ID and s.REGION =:REGION and s.CLUSTER =:CLUSTER")
-
+@NamedQueries({
+@NamedQuery(name= WeeklySplitEntity.findByBoid,query="SELECT s FROM WeeklySplitEntity s WHERE s.BO_ID =:BO_ID and s.REGION =:REGION and s.CLUSTER =:CLUSTER"),
+//@NamedQuery(name= WeeklySplitEntity.findByBoid,query="SELECT s FROM WeeklySplitEntity s WHERE s.BO_ID =:BO_ID and s.REGION =:REGION or s.CLUSTER =:CLUSTER")
+@NamedQuery(name= WeeklySplitEntity.findByidregion,query="SELECT s FROM WeeklySplitEntity s WHERE s.BO_ID =:BO_ID and s.REGION =:REGION")
+})
 
 public class WeeklySplitEntity {
 	//public static final String FIND_ALL = "WeeklySplitEntity.findAll";
 	public static final String findByBoid = "WeeklySplitEntity.findByBoid";
+	public static final String findByidregion = "WeeklySplitEntity.findByidregion";
 	
 	@Column(name = "BO_ID")
 	private Integer BO_ID;
@@ -34,7 +39,7 @@ public class WeeklySplitEntity {
 	private String WEEK_YEAR;
 */
 	@Id
-	@Column(name = "CLUSTER")
+	@Column(name = "CLUSTER",nullable=true)
 	private String CLUSTER;
 
 	@Id
@@ -71,6 +76,16 @@ public class WeeklySplitEntity {
 	
 	@Column(name = "TOTAL")
 	private Integer TOTAL;
+
+	/*private Integer MWEEK;
+	
+	public Integer getMWEEK() {
+		return MWEEK;
+	}
+
+	public void setMWEEK(Integer mWEEK) {
+		MWEEK = mWEEK;
+	}*/
 
 	public Integer getBO_ID() {
 		return BO_ID;
@@ -130,16 +145,29 @@ public Double getW1_QUANTITY() {
 	}
 */
 	public String getCLUSTER() {
+		//System.out.println("******WeeklySplitEntity  getcluster is "+getCLUSTER());
 		return CLUSTER;
 	}
+	//For optional Cluster field.
+	
+	/*public Optional getCLUSTER() {
+	        return Optional.ofNullable(CLUSTER);
+	    }*/
 
+	/*public void setCLUSTER(String cLUSTER) {
+		CLUSTER = cLUSTER;
+	}*/
 	public void setCLUSTER(String cLUSTER) {
+		//System.out.println("WeeklySplitEntity  SETcluster is "+cLUSTER);
 		CLUSTER = cLUSTER;
 	}
+	
 
 	public String getCOMPONENT() {
 		return COMPONENT;
 	}
+
+	
 
 	public void setCOMPONENT(String cOMPONENT) {
 		COMPONENT = cOMPONENT;

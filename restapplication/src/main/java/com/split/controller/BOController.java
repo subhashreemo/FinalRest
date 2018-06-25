@@ -2,6 +2,7 @@ package com.split.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,8 +59,16 @@ public class BOController {
 	@ResponseBody
 	public ResponseEntity<String> createBO(@RequestBody BOHeaderBean bean) {
 		System.out.println("createBO request data");
-		boService.saveBean(bean);
-		return new ResponseEntity<String>("Created Successfully",HttpStatus.CREATED);			
+		boolean validweek=boService.saveBean(bean);
+		System.out.println("validweek is "+validweek);
+		if(validweek==true){
+			System.out.println("Created Successfully status is "+validweek);
+		return new ResponseEntity<String>("Created Successfully",HttpStatus.CREATED);
+		}
+		else{
+			System.out.println("Date Invalid status is "+validweek);
+			return new ResponseEntity<String>("Date Invalid",HttpStatus.BAD_REQUEST);
+		}
 	}
 	//Update WeekelySplit
 	@Autowired
@@ -104,10 +113,13 @@ public class BOController {
 		//Get the List of Buying Order Split
 		@Autowired
 		BuyingOrderSplitService bosplitservice;
-		@RequestMapping(method =  RequestMethod.GET,value="/BuyingOrderSplit/{bo_id}/{region}/{cluster}", produces = MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(method =  RequestMethod.GET,value={"/BuyingOrderSplit/{bo_id}/{region}/{cluster}","/BuyingOrderSplit/{bo_id}/{region}"}, produces = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseBody
-		public ResponseEntity<List<BuyingOrderSplitBean>> getBuyingOrderSplit(@PathVariable("bo_id") Integer bo_id,@PathVariable("region") String region,@PathVariable("cluster") String cluster) {
-			List<BuyingCenterEntity> boSplitentity = bosplitservice.getBOSplit(bo_id,region,cluster);
+		//public ResponseEntity<List<BuyingOrderSplitBean>> getBuyingOrderSplit(@PathVariable("bo_id") Integer bo_id,@PathVariable("region") String region,@PathVariable("cluster") String cluster) {
+		public ResponseEntity<List<BuyingOrderSplitBean>> getBuyingOrderSplit(@PathVariable("bo_id") Integer bo_id,@PathVariable("region") String region,
+				@PathVariable Optional<String> cluster) {
+			//List<BuyingCenterEntity> boSplitentity = bosplitservice.getBOSplit(bo_id,region,cluster);
+			List<BuyingCenterEntity> boSplitentity = bosplitservice.getBOSplit(bo_id,region,cluster.isPresent()?cluster.get():"cluster");
 			List<BuyingOrderSplitBean> boSplitBeans = new ArrayList<>(boSplitentity.size());
 			boSplitentity.forEach(b -> {
 				boSplitBeans.add(new BuyingOrderSplitBean(b));
@@ -120,16 +132,24 @@ public class BOController {
 		@Autowired
 		WeeklySplitService weeksplitservice;
 		//@RequestMapping(method =  RequestMethod.GET,value="/WeeklySplit", produces = MediaType.APPLICATION_JSON_VALUE)
-		@RequestMapping(method =  RequestMethod.GET,value="/WeeklySplit/{bo_id}/{region}/{cluster}",produces = MediaType.APPLICATION_JSON_VALUE)
+		//@RequestMapping(method =  RequestMethod.GET,value="/WeeklySplit/{bo_id}/{region}/{cluster}",produces = MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(method =  RequestMethod.GET,value={"/WeeklySplit/{bo_id}/{region}/{cluster}","/WeeklySplit/{bo_id}/{region}"}, produces = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseBody
-		public ResponseEntity<List<WeeklySplitBean>> getWeeklySplit(@PathVariable("bo_id") Integer bo_id,@PathVariable("region") String region,@PathVariable("cluster") String cluster) {
+		//public ResponseEntity<List<WeeklySplitBean>> getWeeklySplit(@PathVariable("bo_id") Integer bo_id,@PathVariable("region") String region,@PathVariable("cluster") String cluster) {
+		public ResponseEntity<List<WeeklySplitBean>> getWeeklySplit(@PathVariable("bo_id") Integer bo_id,@PathVariable("region") String region,
+				@PathVariable Optional<String> cluster) {
 			System.out.println("getWeeklySplit bo id is "+bo_id);
 			System.out.println("region is "+region);
 			System.out.println("cluster is "+cluster);
-			List<WeeklySplitEntity> boWeekSplitentity = weeksplitservice.getWeekSplit(bo_id,region,cluster);
+			WeeklySplitBean wbean=new WeeklySplitBean();
+			
+			//List<WeeklySplitEntity> boWeekSplitentity = weeksplitservice.getWeekSplit(bo_id,region,cluster);
+			//List<WeeklySplitEntity> boWeekSplitentity =  weeksplitservice.getWeekSplit(bo_id,region,cluster.isPresent()?cluster.get():"cluster");
+			List<WeeklySplitEntity> boWeekSplitentity =  weeksplitservice.getWeekSplit(bo_id,region,cluster.isPresent()?cluster.get():"");
 			List<WeeklySplitBean> wboSplitBeans = new ArrayList<>(boWeekSplitentity.size());
 			boWeekSplitentity.forEach(b -> {
 				wboSplitBeans.add(new WeeklySplitBean(b));
+				//wboSplitBeans.add(wbean.getMWEEK());
 			});
 			return new ResponseEntity<List<WeeklySplitBean>>(wboSplitBeans, HttpStatus.OK);			
 		}

@@ -10,5 +10,9 @@ import com.split.entity.WeeklySplitEntity;
 @Repository
 public interface WeeklySplitRepository extends CrudRepository<WeeklySplitEntity, Long>{
 	
+	
 	List<WeeklySplitEntity> findByBoid(@Param("BO_ID") Integer bo_id,@Param("REGION") String region,@Param("CLUSTER") String cluster);
+	//findByidregion
+	List<WeeklySplitEntity> findByidregion(@Param("BO_ID") Integer bo_id,@Param("REGION") String region);
+	
 }

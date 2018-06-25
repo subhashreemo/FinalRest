@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,9 +19,13 @@ import javax.persistence.Table;
 @Entity
 
 @Table(schema = "\"RB_SCH_TGBL\"", name = "\"tgbl.data.application::TGBL_DDL_APPLICATION.T_TG_BO_HEADER\"")
-@NamedQuery(name = BOHeaderEntity.FIND_ALL, query = "select s from BOHeaderEntity s")
+@NamedQueries({
+@NamedQuery(name = BOHeaderEntity.FIND_ALL, query = "select s from BOHeaderEntity s"),
+@NamedQuery(name= BOHeaderEntity.findByBoid,query="SELECT s FROM BOHeaderEntity s WHERE s.BO_ID =:BO_ID")
+})
 public class BOHeaderEntity{
 	public static final String FIND_ALL = "BOHeaderEntity.findAll";
+	public static final String findByBoid = "BOHeaderEntity.findByBoid";
 	@Id
 //	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "BO_ID", insertable=true, updatable=true, unique=true, nullable=false)
@@ -35,6 +40,15 @@ public class BOHeaderEntity{
 	}
 	@Column(name = "BO_TO")
 	private Date BO_TO;//validTo
+	
+	@OneToMany(mappedBy = "BOHeaderEntity")
+    @JoinColumn(name = "BO_ID", referencedColumnName = "BO_ID")
+    private List<BOItemEntity> BOItemEntity;   
+
+    public List<BOItemEntity> getBOItemEntity() {
+           return BOItemEntity;
+
+    }
 	
 	/*@OneToMany(mappedBy = "boHeaderEntity")
 	@JoinColumn(name = "BO_ID", referencedColumnName = "BO_ID")*/

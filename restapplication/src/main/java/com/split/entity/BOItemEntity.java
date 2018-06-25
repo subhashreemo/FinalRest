@@ -3,7 +3,8 @@ package com.split.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -23,7 +24,8 @@ public class BOItemEntity {
 	public static final String findByBoid = "BOItemEntity.findByBoid";
 	
 	
-	@Column(name = "BO_ID" , insertable=true, updatable=true, unique=true, nullable=false)
+	//@Column(name = "BO_ID" , insertable=true, updatable=true, unique=true, nullable=false)
+	@Column(name = "BO_ID")
 	private Integer BO_ID;
 	@Id
 	@Column(name = "REGION")
@@ -37,6 +39,13 @@ public class BOItemEntity {
 	@Column(name = "QUANTITY")
 	private Integer quantity;//quantity
 	
+	@ManyToOne()
+    @JoinColumn(name="BO_ID", updatable = false, insertable = false)
+    private BOHeaderEntity BOHeaderEntity;
+    public BOHeaderEntity getBOHeaderEntity() {
+           return BOHeaderEntity;
+
+    }
 	/*@ManyToOne()
 	//@PrimaryKeyJoinColumn(name="BO_ID")
 	@JoinColumn(name="BO_ID")

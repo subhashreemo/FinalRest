@@ -51,12 +51,13 @@ public class BuyingOrderSplitBean {
 
 	// constructor for setting bean BuyingOrderSplitBean
 	public BuyingOrderSplitBean(BuyingCenterEntity entity){
-		System.out.println("Quantity 1 "+entity.getW1_QUANTITY());
+		/*System.out.println("Quantity 1 "+entity.getW1_QUANTITY());
 		System.out.println("Quantity 2 "+entity.getW2_QUANTITY());
 		System.out.println("Quantity 3 "+entity.getW3_QUANTITY());
-		System.out.println("Quantity 4 "+entity.getW4_QUANTITY());
+		System.out.println("Quantity 4 "+entity.getW4_QUANTITY());*/
 		this.BO_ID = entity.getBO_ID();
 		this.CLUSTER= entity.getCLUSTER();
+		System.out.println("CLUSTER "+entity.getCLUSTER());
 		this.COMPONENT = entity.getCOMPONENT();
 		this.REGION = entity.getREGION();
 		this.W1_PERCENT = entity.getW1_PERCENT();
